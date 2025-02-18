@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Serj Economy Portal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Serj Economy Portal</h1>
+    <div class="tabs">
+      <button class="tablinks" onclick="openTab(event, 'play')" id="defaultOpen">Play</button>
+      <button class="tablinks" onclick="openTab(event, 'leaderboard')">Leaderboard</button>
+      <button class="tablinks" onclick="openTab(event, 'stocks')">Stocks</button>
+    </div>
+
+    <!-- Play Tab: Slot Machine Game -->
+    <div id="play" class="tabcontent">
+      <h2>Slot Machine Game</h2>
+      <div class="input-group">
+        <label for="username">Discord Username:</label>
+        <input type="text" id="username" placeholder="Enter your Discord username" />
+      </div>
+      <div class="input-group">
+        <label for="bet">Bet Amount:</label>
+        <input type="number" id="bet" placeholder="Enter bet amount" min="1" />
+      </div>
+      <div class="slot-machine">
+        <div class="reel" id="reel1">❔</div>
+        <div class="reel" id="reel2">❔</div>
+        <div class="reel" id="reel3">❔</div>
+      </div>
+      <button id="spinButton">Spin!</button>
+      <div id="message"></div>
+    </div>
+
+    <!-- Leaderboard Tab -->
+    <div id="leaderboard" class="tabcontent">
+      <h2>Leaderboard</h2>
+      <div id="leaderboardContent">
+         <p>Loading leaderboard...</p>
+      </div>
+    </div>
+
+    <!-- Stocks Tab -->
+    <div id="stocks" class="tabcontent">
+      <h2>Stocks</h2>
+      <div id="stocksContent">
+         <p>Loading stock data...</p>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

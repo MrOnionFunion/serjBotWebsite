@@ -1,0 +1,128 @@
+/* General Styles */
+body {
+    background-color: #222;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  
+  .container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
+  }
+  
+  h1, h2 {
+    margin-bottom: 20px;
+  }
+  
+  /* Tabs Navigation */
+  .tabs {
+    overflow: hidden;
+    background-color: #444;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .tabs button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: background-color 0.3s;
+    font-size: 17px;
+    color: #fff;
+  }
+  
+  .tabs button:hover {
+    background-color: #555;
+  }
+  
+  .tabs button.active {
+    background-color: #e91e63;
+  }
+  
+  /* Tab Content */
+  .tabcontent {
+    display: none;
+    padding: 20px;
+    border-top: none;
+  }
+  
+  /* Input and Slot Machine Styles */
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    width: 80%;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+  }
+  
+  .slot-machine {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .reel {
+    font-size: 50px;
+    width: 80px;
+    height: 80px;
+    margin: 0 10px;
+    background-color: #444;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e91e63;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #c2185b;
+  }
+  
+  #message {
+    margin-top: 20px;
+    font-size: 20px;
+  }
+  
+  /* Leaderboard & Stocks Tables */
+  #leaderboardContent, #stocksContent {
+    text-align: left;
+    margin: 0 auto;
+    max-width: 500px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th,
+  table td {
+    border: 1px solid #555;
+    padding: 8px;
+  }
+  
