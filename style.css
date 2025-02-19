@@ -1,128 +1,265 @@
-/* General Styles */
+/* --- Geometric Background Animation --- */
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* behind your container */
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.background-animation .shape {
+  position: absolute;
+  background: rgba(233, 30, 99, 0.15); /* semi-transparent pink */
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  animation: moveShape linear infinite;
+}
+
+/* Keyframe animation for the shapes */
+@keyframes moveShape {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-30px) rotate(180deg);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(0) rotate(360deg);
+    opacity: 0.6;
+  }
+}
+
+/* (Rest of your existing CSS remains unchanged) */
+
+
+/* Base Reset & Fonts */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 body {
-    background-color: #222;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
-  
-  .container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #333;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #000;
-  }
-  
-  h1, h2 {
-    margin-bottom: 20px;
-  }
-  
-  /* Tabs Navigation */
-  .tabs {
-    overflow: hidden;
-    background-color: #444;
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .tabs button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: background-color 0.3s;
-    font-size: 17px;
-    color: #fff;
-  }
-  
-  .tabs button:hover {
-    background-color: #555;
-  }
-  
-  .tabs button.active {
-    background-color: #e91e63;
-  }
-  
-  /* Tab Content */
-  .tabcontent {
-    display: none;
-    padding: 20px;
-    border-top: none;
-  }
-  
-  /* Input and Slot Machine Styles */
-  .input-group {
-    margin-bottom: 15px;
-  }
-  
-  input[type="text"],
-  input[type="number"] {
-    width: 80%;
-    padding: 8px;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
-  }
-  
-  .slot-machine {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-  }
-  
-  .reel {
-    font-size: 50px;
-    width: 80px;
-    height: 80px;
-    margin: 0 10px;
-    background-color: #444;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  button {
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    background-color: #e91e63;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #c2185b;
-  }
-  
-  #message {
-    margin-top: 20px;
-    font-size: 20px;
-  }
-  
-  /* Leaderboard & Stocks Tables */
-  #leaderboardContent, #stocksContent {
-    text-align: left;
-    margin: 0 auto;
-    max-width: 500px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  table th,
-  table td {
-    border: 1px solid #555;
-    padding: 8px;
-  }
-  
+  font-family: 'Roboto', sans-serif;
+  background: #121212;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #1f1f1f;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+/* Header */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+}
+
+/* Tabs Navigation */
+.tabs {
+  display: flex;
+  justify-content: center;
+  background: #2a2a2a;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.tabs button {
+  flex: 1;
+  padding: 15px;
+  font-size: 1rem;
+  color: #e0e0e0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.tabs button:hover {
+  background: #3a3a3a;
+}
+.tabs button.active {
+  background: #e91e63;
+  color: #fff;
+}
+
+/* Tab Content */
+.tabcontent {
+  display: none;
+  animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Form Groups */
+.form-group {
+  margin: 15px 0;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+
+/* Game Areas */
+.game-area {
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* Slots Area */
+.slots-area {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+.reel {
+  width: 80px;
+  height: 80px;
+  background: #2a2a2a;
+  border: 2px solid #444;
+  border-radius: 10px;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Simple spin animation class (used during slot spin) */
+.reel.spin {
+  animation: reelSpin 1s linear infinite;
+}
+@keyframes reelSpin {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+/* Blackjack Area */
+.blackjack-area {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.hand {
+  background: #2a2a2a;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 10px;
+  width: 40%;
+  min-width: 200px;
+}
+.hand h3 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 60px;
+}
+.card {
+  background: #fff;
+  color: #000;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  margin: 5px;
+  padding: 8px;
+  width: 40px;
+  text-align: center;
+  font-weight: bold;
+}
+.hand-value {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Roulette Area */
+.roulette-container {
+  position: relative;
+  margin: 20px auto;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.roulette-wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  /* The background will be set dynamically via JS to include a small green segment */
+  background: none;
+  transition: transform 3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.roulette-pointer {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0; 
+  height: 0; 
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 20px solid #e91e63;
+}
+
+/* Buttons & Messages */
+.game-button {
+  background: #e91e63;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin: 10px auto;
+  display: block;
+}
+.game-button:hover {
+  background: #d81b60;
+}
+.message {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 1.1rem;
+}
+
+/* Tables (Leaderboard/Stocks) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+table th,
+table td {
+  padding: 12px;
+  border: 1px solid #444;
+  text-align: center;
+}
+table th {
+  background: #2a2a2a;
+}
