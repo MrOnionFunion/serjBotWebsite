@@ -133,30 +133,6 @@
     </section>
   </div>
 
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js';
-    import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
-  
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-  
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-  
-    // Expose Firestore functions to the global scope
-    window.db = db;
-    window.query = query;
-    window.collection = collection;
-    window.orderBy = orderBy;
-    window.limit = limit;
-    window.getDocs = getDocs;
-  </script>
   <script src="script.js"></script>
 </body>
 </html>

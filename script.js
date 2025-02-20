@@ -1,5 +1,3 @@
-const { db, query, collection, orderBy, limit, getDocs } = window;
-
 /*******************/
 /* Tab Functionality */
 /*******************/
@@ -397,49 +395,49 @@ function updateRouletteBetOptions() {
   container.appendChild(label);
   container.appendChild(input);
 }
-async function loadLeaderboard() {
+
+/*******************/
+/* Leaderboard (Simulated Data) */
+/*******************/
+function loadLeaderboard() {
   const leaderboardContent = document.getElementById("leaderboardContent");
-  try {
-    const q = query(collection(db, "balances"), orderBy("balance", "desc"), limit(25));
-    const querySnapshot = await getDocs(q);
-    let html = "<table><tr><th>Rank</th><th>Username</th><th>Balance</th></tr>";
-    querySnapshot.forEach((doc, index) => {
-      const data = doc.data();
-      html += `<tr>
-                 <td>${index + 1}</td>
-                 <td>${data.username}</td>
-                 <td>${data.balance}</td>
-               </tr>`;
-    });
-    html += "</table>";
-    leaderboardContent.innerHTML = html;
-  } catch (error) {
-    leaderboardContent.innerHTML = `<p>Error loading leaderboard: ${error.message}</p>`;
-  }
+  const simulatedData = [
+    { username: "Alice", balance: 1500 },
+    { username: "Bob", balance: 1200 },
+    { username: "Charlie", balance: 900 }
+  ];
+  
+  let html = "<table><tr><th>Rank</th><th>Username</th><th>Balance</th></tr>";
+  simulatedData.forEach((entry, index) => {
+    html += `<tr>
+               <td>${index + 1}</td>
+               <td>${entry.username}</td>
+               <td>${entry.balance}</td>
+             </tr>`;
+  });
+  html += "</table>";
+  leaderboardContent.innerHTML = html;
 }
 
-async function loadStocks() {
+/*******************/
+/* Stocks (Simulated Data) */
+/*******************/
+function loadStocks() {
   const stocksContent = document.getElementById("stocksContent");
-  try {
-    const q = query(collection(db, "stocks"));
-    const querySnapshot = await getDocs(q);
-    let html = "<table><tr><th>Symbol</th><th>Price</th><th>Change</th></tr>";
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      const change = data.price - data.prev_price;
-      html += `<tr>
-                 <td>${doc.id}</td>
-                 <td>${data.price}</td>
-                 <td>${change > 0 ? '+' : ''}${change.toFixed(2)}</td>
-               </tr>`;
-    });
-    html += "</table>";
-    stocksContent.innerHTML = html;
-  } catch (error) {
-    stocksContent.innerHTML = `<p>Error loading stocks: ${error.message}</p>`;
-  }
+  const simulatedStocks = [
+    { symbol: "AAPL", price: 150, change: "+1.5" },
+    { symbol: "GOOG", price: 2800, change: "-15" },
+    { symbol: "TSLA", price: 700, change: "+10" }
+  ];
+  
+  let html = "<table><tr><th>Symbol</th><th>Price</th><th>Change</th></tr>";
+  simulatedStocks.forEach(stock => {
+    html += `<tr>
+               <td>${stock.symbol}</td>
+               <td>${stock.price}</td>
+               <td>${stock.change}</td>
+             </tr>`;
+  });
+  html += "</table>";
+  stocksContent.innerHTML = html;
 }
-
-// Call the functions when needed, e.g., on page load
-loadLeaderboard();
-loadStocks();
