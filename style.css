@@ -263,3 +263,39 @@ table td {
 table th {
   background: #2a2a2a;
 }
+
+/* Texas Hold'em Poker Area Styles */
+.poker-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.community-cards, .player-hand, .ai-hand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.poker-card {
+  width: 60px;
+  height: 90px;
+  background: #fff;
+  color: #000;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  margin: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  position: relative;
+  transition: transform 0.5s ease;
+}
+.deal-animation {
+  animation: dealCard 0.5s ease-out;
+}
+@keyframes dealCard {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

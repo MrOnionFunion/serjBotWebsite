@@ -402,9 +402,9 @@ function updateRouletteBetOptions() {
 function loadLeaderboard() {
   const leaderboardContent = document.getElementById("leaderboardContent");
   const simulatedData = [
-    { username: "Alice", balance: 1500 },
-    { username: "Bob", balance: 1200 },
-    { username: "Charlie", balance: 900 }
+    { username: "serj", balance: 1500 },
+    { username: "eddie brock", balance: 1200 },
+    { username: "JLR", balance: 900 }
   ];
   
   let html = "<table><tr><th>Rank</th><th>Username</th><th>Balance</th></tr>";
@@ -418,7 +418,184 @@ function loadLeaderboard() {
   html += "</table>";
   leaderboardContent.innerHTML = html;
 }
+/*******************/
+/* TEXAS HOLD'EM POKER GAME */
+/*******************/
+let pokerDeck = [], playerPokerHand = [], aiPokerHand = [], communityCards = [];
+let currentPokerRound = 0; // 0: Pre-flop, 1: Flop, 2: Turn, 3: River, 4: Showdown
 
+document.getElementById('pokerDealButton').addEventListener('click', startPokerGame);
+document.getElementById('pokerBetButton').addEventListener('click', playerBetCall);
+document.getElementById('pokerFoldButton').addEventListener('click', playerFold);
+document.getElementById('pokerNextButton').addEventListener('click', nextPokerRound);
+
+function createPokerDeck() {
+  const suits = ['♠', '♥', '♦', '♣'];
+  const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J','Q','K','A'];
+  let deck = [];
+  suits.forEach(suit => {
+    ranks.forEach(rank => deck.push({ rank, suit }));
+  });
+  return deck;
+}
+
+function shufflePokerDeck(deck) {
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+  return deck;
+}
+
+function startPokerGame() {
+  const username = document.getElementById('pokerUsername').value.trim();
+  const bet = parseInt(document.getElementById('pokerBet').value);
+  const messageDiv = document.getElementById('pokerMessage');
+  
+  if (!username) {
+    messageDiv.textContent = "Please enter your Discord username.";
+    return;
+  }
+  if (!bet || bet < 1) {
+    messageDiv.textContent = "Please enter a valid bet amount.";
+    return;
+  }
+  
+  pokerDeck = shufflePokerDeck(createPokerDeck());
+  playerPokerHand = [pokerDeck.pop(), pokerDeck.pop()];
+  aiPokerHand = [pokerDeck.pop(), pokerDeck.pop()];
+  communityCards = [];
+  currentPokerRound = 0;
+  
+  updatePokerUI();
+  
+  // Enable betting controls for pre-flop
+  document.getElementById('pokerBetButton').disabled = false;
+  document.getElementById('pokerFoldButton').disabled = false;
+  document.getElementById('pokerDealButton').disabled = true;
+  document.getElementById('pokerNextButton').disabled = true;
+  
+  messageDiv.textContent = "Pre-Flop: Place your bet or fold.";
+}
+
+function updatePokerUI() {
+  function displayCards(cards, elementId, hidden = false) {
+    const container = document.getElementById(elementId);
+    container.innerHTML = "";
+    cards.forEach(card => {
+      const cardDiv = document.createElement('div');
+      cardDiv.className = 'card poker-card';
+      // Hide AI cards until showdown (round 4)
+      cardDiv.textContent = hidden ? "🂠" : (card.rank + card.suit);
+      container.appendChild(cardDiv);
+      cardDiv.classList.add('deal-animation');
+    });
+  }
+  
+  displayCards(playerPokerHand, 'playerPokerCards');
+  displayCards(aiPokerHand, 'aiPokerCards', currentPokerRound < 4);
+  displayCards(communityCards, 'communityCards');
+}
+
+function nextPokerRound() {
+  const messageDiv = document.getElementById('pokerMessage');
+  if (currentPokerRound === 0) {
+    // Flop: deal 3 community cards
+    communityCards.push(pokerDeck.pop(), pokerDeck.pop(), pokerDeck.pop());
+    currentPokerRound = 1;
+    messageDiv.textContent = "Flop dealt. Place your bet or fold.";
+  } else if (currentPokerRound === 1) {
+    // Turn: deal 1 community card
+    communityCards.push(pokerDeck.pop());
+    currentPokerRound = 2;
+    messageDiv.textContent = "Turn dealt. Place your bet or fold.";
+  } else if (currentPokerRound === 2) {
+    // River: deal 1 community card
+    communityCards.push(pokerDeck.pop());
+    currentPokerRound = 3;
+    messageDiv.textContent = "River dealt. Place your bet or fold.";
+  } else if (currentPokerRound === 3) {
+    // Showdown
+    currentPokerRound = 4;
+    document.getElementById('pokerBetButton').disabled = true;
+    document.getElementById('pokerFoldButton').disabled = true;
+    document.getElementById('pokerNextButton').disabled = true;
+    updatePokerUI();
+    let result = evaluatePokerHands();
+    messageDiv.innerHTML = result.message;
+    // Send result via webhook
+    const username = document.getElementById('pokerUsername').value.trim();
+    const bet = parseInt(document.getElementById('pokerBet').value);
+    sendWebhook({
+      game: "Texas Hold'em",
+      secret: SECRET_KEY,
+      username: username,
+      bet: bet,
+      result: result.outcome,
+      payout: result.payout,
+      playerHand: playerPokerHand,
+      aiHand: aiPokerHand,
+      community: communityCards
+    });
+    // Allow new game after showdown
+    document.getElementById('pokerDealButton').disabled = false;
+    return;
+  }
+  updatePokerUI();
+  // Enable betting controls for next round (if not showdown)
+  document.getElementById('pokerBetButton').disabled = false;
+  document.getElementById('pokerFoldButton').disabled = false;
+  document.getElementById('pokerNextButton').disabled = true;
+  messageDiv.textContent += " Place your bet or fold, then click 'Bet/Call'.";
+}
+
+// Simplified hand evaluation (placeholder for robust logic)
+// This basic evaluator sums card ranks (with Ace high) to decide the winner.
+function evaluatePokerHands() {
+  function handStrength(hand) {
+    const rankMap = {'2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, '10':10, 'J':11, 'Q':12, 'K':13, 'A':14};
+    let allCards = hand.concat(communityCards);
+    return allCards.reduce((sum, card) => sum + (rankMap[card.rank] || 0), 0);
+  }
+  
+  const playerStrength = handStrength(playerPokerHand);
+  const aiStrength = handStrength(aiPokerHand);
+  
+  if (playerStrength > aiStrength) {
+    return { outcome: "win", payout: 2, message: "You win! Your hand is stronger." };
+  } else if (playerStrength < aiStrength) {
+    return { outcome: "loss", payout: 0, message: "You lose. The AI wins this round." };
+  } else {
+    return { outcome: "push", payout: 1, message: "It's a tie!" };
+  }
+}
+
+function playerBetCall() {
+  // Here you could add more complex AI betting logic.
+  // For now, simply disable bet buttons and wait for the next round.
+  document.getElementById('pokerBetButton').disabled = true;
+  document.getElementById('pokerFoldButton').disabled = true;
+  document.getElementById('pokerNextButton').disabled = false;
+  document.getElementById('pokerMessage').textContent = "Bet accepted. Click 'Next Round' to continue.";
+}
+
+function playerFold() {
+  document.getElementById('pokerMessage').textContent = "You folded. AI wins by default.";
+  document.getElementById('pokerBetButton').disabled = true;
+  document.getElementById('pokerFoldButton').disabled = true;
+  document.getElementById('pokerNextButton').disabled = true;
+  const username = document.getElementById('pokerUsername').value.trim();
+  const bet = parseInt(document.getElementById('pokerBet').value);
+  sendWebhook({
+    game: "Texas Hold'em",
+    secret: SECRET_KEY,
+    username: username,
+    bet: bet,
+    result: "fold",
+    payout: 0
+  });
+  document.getElementById('pokerDealButton').disabled = false;
+}
 /*******************/
 /* Stocks (Simulated Data) */
 /*******************/
